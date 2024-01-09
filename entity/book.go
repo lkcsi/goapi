@@ -1,8 +1,8 @@
 package entity
 
 type Book struct {
-	Id       string `json:"id"`
-	Title    string `json:"title"`
-	Author   string `json:"author"`
-	Quantity int    `json:"quantity"`
+	Id       string `json:"id" binding:"-"`
+	Title    string `json:"title" binding:"required"`
+	Author   string `json:"author" binding:"required"`
+	Quantity int    `json:"quantity" binding:"required,gt=0"`
 }

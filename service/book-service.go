@@ -3,6 +3,7 @@ package service
 import (
 	"errors"
 
+	"github.com/google/uuid"
 	"github.com/lkcsi/goapi/entity"
 )
 
@@ -30,7 +31,7 @@ func NewInMemory() BookService {
 }
 
 func (bs *bookService) Save(book entity.Book) (*entity.Book, error) {
-	book.Id = "5"
+	book.Id = uuid.NewString()
 	bs.books = append(bs.books, book)
 	return &book, nil
 }
