@@ -1,11 +1,11 @@
 package controller
 
 import (
-	"errors"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"github.com/lkcsi/goapi/custerror"
 	"github.com/lkcsi/goapi/entity"
 	"github.com/lkcsi/goapi/service"
 )
@@ -86,20 +86,24 @@ type ErrorMsg struct {
 }
 
 func setError(context *gin.Context, err error) {
-	var ve validator.ValidationErrors
-	if errors.As(err, &ve) {
-		context.IndentedJSON(http.StatusBadRequest, gin.H{"error": getErrorMsg(ve[0])})
-	} else {
+	switch err.(type) {
+	case validator.ValidationErrors:
+		s := err.(validator.ValidationErrors)
+		context.IndentedJSON(http.StatusBadRequest, gin.H{"error": getErrorMsg(s[0])})
+	case custerror.CustError:
+		s := err.(custerror.CustError)
+		context.IndentedJSON(s.Code(), gin.H{"error": s.Error()})
+	default:
 		context.IndentedJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 	}
 }
 
 func getErrorMsg(fe validator.FieldError) string {
-	switch fe.Tag() {
+	switch fe.ActualTag() {
 	case "required":
 		return fe.Field() + " field is mandatory"
-	case "gt":
-		return fe.Field() + " should be greater than " + fe.Param()
+	case "gte":
+		return fe.Field() + " must be greater than or equals " + fe.Param()
 	}
 	return "unkown error"
 }

@@ -1,9 +1,8 @@
 package service
 
 import (
-	"errors"
-
 	"github.com/google/uuid"
+	"github.com/lkcsi/goapi/custerror"
 	"github.com/lkcsi/goapi/entity"
 )
 
@@ -21,10 +20,10 @@ type bookService struct {
 
 func NewInMemory() BookService {
 	books := []entity.Book{
-		{Id: "1", Title: "Title_1", Author: "Author_1", Quantity: 1},
-		{Id: "2", Title: "Title_2", Author: "Author_2", Quantity: 3},
-		{Id: "3", Title: "Title_3", Author: "Author_3", Quantity: 0},
-		{Id: "4", Title: "Title_4", Author: "Author_4", Quantity: 4},
+		{Id: "1", Title: "Title_1", Author: "Author_1", Quantity: 5},
+		{Id: "2", Title: "Title_2", Author: "Author_2", Quantity: 0},
+		{Id: "3", Title: "Title_3", Author: "Author_3", Quantity: 6},
+		{Id: "4", Title: "Title_4", Author: "Author_4", Quantity: 5},
 	}
 	bs := bookService{books: books}
 	return &bs
@@ -59,6 +58,9 @@ func (bs *bookService) Checkout(id string) (*entity.Book, error) {
 	if err != nil {
 		return nil, err
 	}
+	if book.Quantity == 0 {
+		return nil, custerror.NewOutOfStockError(id)
+	}
 	book.Quantity -= 1
 	return book, nil
 }
@@ -69,7 +71,8 @@ func (bs *bookService) findBookIndex(id string) (int, error) {
 			return i, nil
 		}
 	}
-	return 0, errors.New("book not found")
+	return 0, custerror.NewNotFoundError(id)
+
 }
 
 func (bs *bookService) findBookById(id string) (*entity.Book, error) {
@@ -78,5 +81,5 @@ func (bs *bookService) findBookById(id string) (*entity.Book, error) {
 			return &bs.books[i], nil
 		}
 	}
-	return nil, errors.New("book not found")
+	return nil, custerror.NewNotFoundError(id)
 }
