@@ -54,12 +54,11 @@ func (c *bookController) Save(context *gin.Context) {
 
 func (c *bookController) DeleteBookById(context *gin.Context) {
 	id := context.Param("id")
-	book, err := c.bookService.DeleteById(id)
-	if err != nil {
+	if err := c.bookService.DeleteById(id); err != nil {
 		setError(context, err)
 		return
 	}
-	context.IndentedJSON(http.StatusNoContent, book)
+	context.IndentedJSON(http.StatusNoContent, nil)
 }
 func (c *bookController) CheckoutBook(context *gin.Context) {
 	id := context.Param("id")
