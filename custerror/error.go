@@ -24,6 +24,6 @@ func NewOutOfStockError(id string) CustError {
 	return &custError{400, fmt.Sprintf("book with id: %s is out of order", id)}
 }
 
-func NewNotFoundError(id string) CustError {
+func NotFoundError(id string) CustError {
 	return &custError{404, fmt.Sprintf("book with id: %s is not found", id)}
 }

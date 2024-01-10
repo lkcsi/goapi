@@ -19,10 +19,15 @@ type bookService struct {
 	bookRepository repository.BookRepository
 }
 
-func NewInMemory() BookService {
+func NewInMemoryBookService() BookService {
 	repo := repository.NewImBookRepository()
 	bs := bookService{repo}
 	return &bs
+}
+
+func NewSqlBookService() BookService {
+	repo := repository.NewSqlBookRepository()
+	return &bookService{repo}
 }
 
 func (bs *bookService) Save(book entity.Book) (*entity.Book, error) {
@@ -38,7 +43,11 @@ func (bs *bookService) FindAll() ([]entity.Book, error) {
 }
 
 func (bs *bookService) FindById(id string) (*entity.Book, error) {
-	return bs.bookRepository.FindById(id)
+	book, err := bs.bookRepository.FindById(id)
+	if err != nil {
+		return nil, custerror.NotFoundError(id)
+	}
+	return book, nil
 }
 
 func (bs *bookService) DeleteById(id string) error {
@@ -51,7 +60,7 @@ func (bs *bookService) DeleteById(id string) error {
 func (bs *bookService) Checkout(id string) (*entity.Book, error) {
 	book, err := bs.bookRepository.FindById(id)
 	if err != nil {
-		return nil, err
+		return nil, custerror.NotFoundError(id)
 	}
 	if book.Quantity == 0 {
 		return nil, custerror.NewOutOfStockError(id)

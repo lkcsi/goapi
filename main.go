@@ -1,16 +1,12 @@
 package main
 
 import (
-	"database/sql"
-	"log"
 	"os"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	_ "github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"
 	"github.com/lkcsi/goapi/controller"
-	"github.com/lkcsi/goapi/entity"
 	"github.com/lkcsi/goapi/service"
 )
 
@@ -23,23 +19,31 @@ func authEnabled() bool {
 	return false
 }
 
-func authService() service.AuthService {
+var authService service.AuthService
+var bookService service.BookService
+
+func getAuthService() service.AuthService {
 	if authEnabled() {
 		return service.NewJwtAuthService()
 	}
 	return service.NewFakeAuthService()
 }
 
+func getBookService() service.BookService {
+	if os.Getenv("REPOSITORY") == "SQL" {
+		return service.NewSqlBookService()
+	}
+	return service.NewInMemoryBookService()
+}
+
 func main() {
 	godotenv.Load()
 
-	test_db()
-
 	server := gin.Default()
 
-	bookService := service.NewInMemory()
+	bookService = getBookService()
 	bookController := controller.New(&bookService)
-	authService := authService()
+	authService = getAuthService()
 
 	books := server.Group("/books")
 	books.Use(authService.Auth)
@@ -50,38 +54,4 @@ func main() {
 	books.PATCH("/:id/checkout", bookController.CheckoutBook)
 
 	server.Run("localhost:8080")
-}
-
-func test_db() {
-	db, err := sql.Open("mysql", "root:asdfgh@tcp(localhost:3308)/book_db")
-	defer db.Close()
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	var version string
-	err = db.QueryRow("SELECT VERSION()").Scan(&version)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	log.Println(version)
-
-	res, err := db.Query("SELECT * FROM books")
-	defer res.Close()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	for res.Next() {
-		var book entity.Book
-		err := res.Scan(&book.Id, &book.Title, &book.Author, &book.Quantity)
-		if err != nil {
-			log.Fatal(err)
-		}
-		log.Println(book)
-	}
-
 }

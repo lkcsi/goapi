@@ -47,7 +47,7 @@ func (bs *imBookRepository) findBookIndex(id string) (int, error) {
 			return i, nil
 		}
 	}
-	return 0, custerror.NewNotFoundError(id)
+	return 0, custerror.NotFoundError(id)
 
 }
 
@@ -57,5 +57,5 @@ func (bs *imBookRepository) findBookById(id string) (*entity.Book, error) {
 			return &bs.books[i], nil
 		}
 	}
-	return nil, custerror.NewNotFoundError(id)
+	return nil, custerror.NotFoundError(id)
 }
