@@ -3,13 +3,14 @@ package middleware
 import (
 	"fmt"
 	"log"
+	"os"
 	"strings"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 )
 
-func Test() gin.HandlerFunc {
+func Auth() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		authHeader := c.GetHeader("Authorization")
 		if authHeader == "" {
@@ -25,7 +26,8 @@ func Test() gin.HandlerFunc {
 			if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
 				return nil, fmt.Errorf("Unexpected signing method: %v", t.Header["alg"])
 			}
-			return []byte("not_so_scret"), nil
+			secret := os.Getenv("AUTH_SECRET")
+			return []byte(secret), nil
 		})
 
 		if err != nil || !token.Valid {
