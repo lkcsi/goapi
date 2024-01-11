@@ -24,6 +24,18 @@ func (bs *imBookRepository) Save(book *entity.Book) error {
 	return nil
 }
 
+func (bs *imBookRepository) Update(id string, updated *entity.Book) error {
+	book, err := bs.findBookById(id)
+	if err != nil {
+		return err
+	}
+	book.Author = updated.Author
+	book.Quantity = updated.Quantity
+	book.Title = updated.Title
+
+	return nil
+}
+
 func (bs *imBookRepository) FindAll() ([]entity.Book, error) {
 	return bs.books, nil
 }

@@ -66,7 +66,7 @@ func (bs *bookService) Checkout(id string) (*entity.Book, error) {
 		return nil, custerror.NewOutOfStockError(id)
 	}
 	book.Quantity -= 1
-	if err := bs.bookRepository.Save(book); err != nil {
+	if err := bs.bookRepository.Update(id, book); err != nil {
 		return nil, err
 	}
 	return book, nil
