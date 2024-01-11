@@ -15,6 +15,8 @@ type sqlBookRepository struct {
 	db *sql.DB
 }
 
+// DeleteAll implements BookRepository.
+
 func NewSqlBookRepository() BookRepository {
 	pwd := os.Getenv("MYSQL_PASSWORD")
 	port := os.Getenv("MYSQL_PORT")
@@ -25,9 +27,10 @@ func NewSqlBookRepository() BookRepository {
 	}
 	return &sqlBookRepository{db}
 }
-
-func (repo *sqlBookRepository) openConnection() error {
-	if repo.db == nil {
+func (r *sqlBookRepository) DeleteAll() error {
+	_, err := r.db.Exec("DELETE FROM books")
+	if err != nil {
+		return err
 	}
 	return nil
 }

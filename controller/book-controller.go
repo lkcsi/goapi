@@ -16,6 +16,7 @@ type BookController interface {
 	DeleteById(context *gin.Context)
 	Checkout(context *gin.Context)
 	Save(context *gin.Context)
+	DeleteAll(context *gin.Context)
 }
 
 type bookController struct {
@@ -33,6 +34,14 @@ func (c *bookController) FindAll(context *gin.Context) {
 		return
 	}
 	context.IndentedJSON(http.StatusOK, books)
+}
+
+func (c *bookController) DeleteAll(context *gin.Context) {
+	if err := c.bookService.DeleteAll(); err != nil {
+		setError(context, err)
+		return
+	}
+	context.IndentedJSON(http.StatusNoContent, "")
 }
 
 func (c *bookController) Save(context *gin.Context) {

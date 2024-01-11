@@ -50,6 +50,7 @@ func main() {
 	books.GET("", bookController.FindAll)
 	books.GET("/:id", bookController.FindById)
 	books.DELETE("/:id", bookController.DeleteBookById)
+	books.DELETE("", bookController.DeleteAll)
 	books.POST("", bookController.Save)
 	books.PATCH("/:id/checkout", bookController.CheckoutBook)
 

@@ -9,13 +9,14 @@ type imBookRepository struct {
 	books []entity.Book
 }
 
+// DeleteAll implements BookRepository.
+func (r *imBookRepository) DeleteAll() error {
+	r.books = make([]entity.Book, 0)
+	return nil
+}
+
 func NewImBookRepository() BookRepository {
-	books := []entity.Book{
-		{Id: "1", Title: "Title_1", Author: "Author_1", Quantity: 5},
-		{Id: "2", Title: "Title_2", Author: "Author_2", Quantity: 0},
-		{Id: "3", Title: "Title_3", Author: "Author_3", Quantity: 6},
-		{Id: "4", Title: "Title_4", Author: "Author_4", Quantity: 5},
-	}
+	books := make([]entity.Book, 0)
 	return &imBookRepository{books: books}
 }
 

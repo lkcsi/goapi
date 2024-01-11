@@ -13,10 +13,15 @@ type BookService interface {
 	FindById(string) (*entity.Book, error)
 	DeleteById(string) error
 	Checkout(string) (*entity.Book, error)
+	DeleteAll() error
 }
 
 type bookService struct {
 	bookRepository repository.BookRepository
+}
+
+func (b *bookService) DeleteAll() error {
+	return b.bookRepository.DeleteAll()
 }
 
 func NewInMemoryBookService() BookService {
@@ -62,10 +67,10 @@ func (bs *bookService) Checkout(id string) (*entity.Book, error) {
 	if err != nil {
 		return nil, custerror.NotFoundError(id)
 	}
-	if book.Quantity == 0 {
+	if *book.Quantity == 0 {
 		return nil, custerror.NewOutOfStockError(id)
 	}
-	book.Quantity -= 1
+	*book.Quantity -= 1
 	if err := bs.bookRepository.Update(id, book); err != nil {
 		return nil, err
 	}

@@ -8,4 +8,5 @@ type BookRepository interface {
 	Update(string, *entity.Book) error
 	FindById(string) (*entity.Book, error)
 	DeleteById(string) error
+	DeleteAll() error
 }
