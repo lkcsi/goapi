@@ -54,5 +54,5 @@ func main() {
 	books.POST("", bookController.Save)
 	books.PATCH("/:id/checkout", bookController.CheckoutBook)
 
-	server.Run("localhost:8080")
+	server.Run("0.0.0.0:8080")
 }

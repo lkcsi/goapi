@@ -1,8 +1,14 @@
 version: '3.3'
 services:
-  mysql_test_db:
+  books_db:
     image: test_db
+    networks:
+      - bookstore
     environment:
       MYSQL_ROOT_PASSWORD: asdfgh
     ports:
-      - "3308:3306"
+      - "3306:3306"
+
+networks:
+  bookstore:
+    external: true

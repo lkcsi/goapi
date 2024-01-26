@@ -20,7 +20,8 @@ type sqlBookRepository struct {
 func NewSqlBookRepository() BookRepository {
 	pwd := os.Getenv("MYSQL_PASSWORD")
 	port := os.Getenv("MYSQL_PORT")
-	conn := fmt.Sprintf("root:%s@tcp(localhost:%s)/book_db", pwd, port)
+	host := os.Getenv("DB_HOST")
+	conn := fmt.Sprintf("root:%s@tcp(%s:%s)/book_db", pwd, host, port)
 	db, err := sql.Open("mysql", conn)
 	if err != nil {
 		log.Println("Unable to connect database")
