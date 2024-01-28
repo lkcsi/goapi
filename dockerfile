@@ -1,6 +1,4 @@
-FROM golang:latest
-RUN apt update
-RUN apt install -y vim
+FROM golang:alpine
 WORKDIR /app
 ADD . .
 CMD go run .

@@ -2,7 +2,6 @@ package service
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"strings"
 
@@ -53,8 +52,7 @@ func (j *jwtAuthService) Auth(c *gin.Context) {
 	})
 
 	if err != nil || !token.Valid {
-		log.Println(err)
-		c.AbortWithStatusJSON(401, gin.H{"error": "Invalid JWT"})
+		c.AbortWithStatusJSON(401, gin.H{"error": err.Error()})
 		return
 	}
 	c.Next()
