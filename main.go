@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 	"strconv"
@@ -58,7 +59,7 @@ func main() {
 	health := server.Group("/health-check")
 	health.GET("", healthCheck)
 
-	server.Run("0.0.0.0:8081")
+	server.Run(fmt.Sprintf("0.0.0.0:%s", os.Getenv("PORT")))
 }
 
 func healthCheck(c *gin.Context) {
