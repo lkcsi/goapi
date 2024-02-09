@@ -1,6 +1,7 @@
 package main
 
 import (
+	"net/http"
 	"os"
 	"strconv"
 
@@ -54,5 +55,12 @@ func main() {
 	books.POST("", bookController.Save)
 	books.PATCH("/:id/checkout", bookController.CheckoutBook)
 
-	server.Run("0.0.0.0:8080")
+	health := server.Group("/health-check")
+	health.GET("", healthCheck)
+
+	server.Run("0.0.0.0:8081")
+}
+
+func healthCheck(c *gin.Context) {
+	c.IndentedJSON(http.StatusOK, "")
 }

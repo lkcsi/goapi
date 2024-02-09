@@ -21,7 +21,7 @@ func (err *custError) Error() string {
 }
 
 func NewOutOfStockError(id string) CustError {
-	return &custError{400, fmt.Sprintf("book with id: %s is out of order", id)}
+	return &custError{400, fmt.Sprintf("book with id: %s is out of stock", id)}
 }
 
 func NotFoundError(id string) CustError {
