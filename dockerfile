@@ -1,5 +1,5 @@
 FROM golang:alpine
 WORKDIR /app
 ADD . .
-RUN go build -o /app
-CMD ['/app']
+RUN go install
+CMD go run .
