@@ -1,4 +1,5 @@
 FROM golang:alpine
 WORKDIR /app
 ADD . .
-CMD go build -o goapi && ./goapi
+RUN go build -o /goapi 
+CMD ['/goapi']
