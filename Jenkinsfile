@@ -1,11 +1,11 @@
 pipeline {
     agent any
     environment {
-        AUTH_SECRET='If9ZNqTIob'
+        AUTH_SECRET=credentials('auth-secret')
         AUTH_ENABLED='false'
         BOOKS_REPOSITORY='SQL'
         BOOKS_DB_HOST='books-db-1'
-        BOOKS_DB_PASSWORD='asdfgh'
+        BOOKS_DB_PASSWORD=credentials('books-db-password')
         BOOKS_DB_PORT=3306
         BOOKS_API_PORT=8081
     }
