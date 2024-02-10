@@ -2,6 +2,8 @@ version: '3.3'
 services:
   books_api:
     build: .
+    env_file:
+      - .env
     networks:
       - bookstore
     volumes:
