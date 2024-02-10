@@ -1,21 +1,22 @@
 version: '3.3'
+name: books
 services:
-  books_api:
+  api:
     build: .
     env_file:
       - .env
     networks:
       - bookstore
     ports:
-      - "8081:8081"
-  books_db:
+      - "${BOOKS_API_PORT}:${BOOKS_API_PORT}"
+  db:
     build: ./book-database
     networks:
       - bookstore
     environment:
-      MYSQL_ROOT_PASSWORD: asdfgh
+      MYSQL_ROOT_PASSWORD: ${BOOKS_DB_PASSWORD}
     ports:
-      - "3306:3306"
+      - "${BOOKS_DB_PORT}:${BOOKS_DB_PORT}"
 
 networks:
   bookstore:

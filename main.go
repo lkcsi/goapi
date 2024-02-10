@@ -32,7 +32,7 @@ func getAuthService() service.AuthService {
 }
 
 func getBookService() service.BookService {
-	if os.Getenv("REPOSITORY") == "SQL" {
+	if os.Getenv("BOOKS_REPOSITORY") == "SQL" {
 		return service.NewSqlBookService()
 	}
 	return service.NewInMemoryBookService()
@@ -59,7 +59,7 @@ func main() {
 	health := server.Group("/health-check")
 	health.GET("", healthCheck)
 
-	server.Run(fmt.Sprintf("0.0.0.0:%s", os.Getenv("PORT")))
+	server.Run(fmt.Sprintf("0.0.0.0:%s", os.Getenv("BOOKS_API_PORT")))
 }
 
 func healthCheck(c *gin.Context) {
