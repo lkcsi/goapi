@@ -6,7 +6,7 @@ pipeline {
                 echo 'build'
                 sh 'docker stop $(docker ps -a -q)'
                 sh 'docker prune -y'
-                sh 'docker-compose up'
+                sh 'docker-compose up -d'
             }
         }
     }
