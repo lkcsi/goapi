@@ -8,7 +8,7 @@ pipeline {
                     try {
                         sh 'docker stop $(docker ps -a -q)'
                         sh 'docker rm $(docker ps -a -q)'
-                    } catch {
+                    } catch (err) {
                         echo 'No probs'
                     }
                 }
