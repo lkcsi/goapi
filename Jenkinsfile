@@ -4,9 +4,13 @@ pipeline {
         stage("build") {
             steps {
                 echo 'build'
-                catchError {
-                    sh 'docker stop $(docker ps -a -q)'
-                    sh 'docker rm $(docker ps -a -q)'
+                script {
+                    try {
+                        sh 'docker stop $(docker ps -a -q)'
+                        sh 'docker rm $(docker ps -a -q)'
+                    } catch {
+                        echo 'No probs'
+                    }
                 }
             }
         }
