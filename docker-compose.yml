@@ -5,7 +5,7 @@ services:
     build: .
     environment:
       - BOOKS_API_PORT: ${BOOKS_API_PORT}
-      - BOOKS_DB_PORT: ${BOOKS_API_PORT}
+      - BOOKS_DB_PORT: ${BOOKS_DB_PORT}
       - AUTH_ENABLED: ${AUTH_ENABLED}
       - BOOKS_REPOSITORY: ${BOOKS_REPOSITORY}
       - BOOKS_DB_HOST: ${BOOKS_DB_HOST}
@@ -19,8 +19,8 @@ services:
     networks:
       - bookstore
     environment:
-      MYSQL_ROOT_PASSWORD: ${BOOKS_DB_PASSWORD}
-      BOOKS_DB_PORT: ${BOOKS_DB_PORT}
+      - MYSQL_ROOT_PASSWORD: ${BOOKS_DB_PASSWORD}
+      - BOOKS_DB_PORT: ${BOOKS_DB_PORT}
     ports:
       - "${BOOKS_DB_PORT}:${BOOKS_DB_PORT}"
 
