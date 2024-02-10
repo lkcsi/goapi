@@ -6,8 +6,6 @@ services:
       - .env
     networks:
       - bookstore
-    volumes:
-      - ./:/app
     ports:
       - "8081:8081"
   books_db:
