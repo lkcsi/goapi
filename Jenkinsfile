@@ -4,8 +4,7 @@ pipeline {
         stage("build") {
             steps {
                 echo 'build'
-                sh 'docker stop $(docker ps -a -q)'
-                sh 'docker container prune -f'
+                sh 'docker-compose down'
                 sh 'docker-compose up -d'
             }
         }
