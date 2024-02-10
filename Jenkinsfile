@@ -1,7 +1,10 @@
-stages {
-    stage("build") {
-        steps {
-            echo 'build'
+pipeline {
+    agent any
+    stages {
+        stage("build") {
+            steps {
+                echo 'build'
+            }
         }
     }
 }
