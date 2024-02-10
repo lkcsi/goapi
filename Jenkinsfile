@@ -11,6 +11,7 @@ pipeline {
                     } catch (err) {
                         echo 'No probs'
                     }
+                    sh 'docker-compose build'
                     sh 'docker-compose up -d'
                 }
             }
