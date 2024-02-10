@@ -20,7 +20,7 @@ pipeline {
                     } catch (err) {
                         echo 'No probs'
                     }
-                    echo ${BOOKS_API_PORT}
+                    echo "${BOOKS_API_PORT}"
                     sh 'docker compose build'
                     sh 'docker compose up -d'
                 }
