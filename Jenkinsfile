@@ -4,8 +4,10 @@ pipeline {
         stage("build") {
             steps {
                 echo 'build'
-                sh 'docker-compose down'
-                sh 'docker-compose up -d'
+                catchError {
+                    sh 'docker stop $(docker ps -a -q)'
+                    sh 'docker rm $(docker ps -a -q)'
+                }
             }
         }
     }
