@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         AUTH_SECRET=credentials('auth-secret')
-        AUTH_ENABLED="${auth-enabled}"
+        AUTH_ENABLED=auth-enabled
         BOOKS_REPOSITORY='SQL'
         BOOKS_DB_HOST='books-db-1'
         BOOKS_DB_PASSWORD=credentials('books-db-password')
